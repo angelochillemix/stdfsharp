@@ -46,5 +46,25 @@ namespace KA.StdfSharp.Tests
 			Assert.IsFalse(new Cpu(CpuType.Sun).IsLittleEndian);
 			Assert.IsTrue(new Cpu(CpuType.Sun386).IsLittleEndian);
 		}
+
+		[Test]
+		public void TestCpuComparison() 
+		{
+			Assert.IsFalse(new Cpu(CpuType.Vax) == new Cpu(CpuType.Sun));
+			Assert.IsTrue(new Cpu(CpuType.Sun).Equals(new Cpu(CpuType.Sun)));
+			Assert.IsTrue(new Cpu(CpuType.Sun) == new Cpu(CpuType.Sun));
+			Assert.IsTrue(new Cpu(CpuType.Sun) != new Cpu(CpuType.Sun386));
+			Assert.IsTrue(new Cpu(CpuType.Vax) != new Cpu(CpuType.Sun386));
+		}
+
+		[Test]
+		public void TestCpuException()
+		{
+			Assert.Throws<ArgumentException>(() => new Cpu(5));
+			Assert.DoesNotThrow(() => new Cpu(CpuType.Sun));
+			Assert.DoesNotThrow(() => new Cpu(CpuType.Sun386));
+			Assert.DoesNotThrow(() => new Cpu(CpuType.Vax));
+		}
+
 	}
 }

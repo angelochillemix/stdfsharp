@@ -114,8 +114,7 @@ namespace KA.StdfSharp.Tests.Record.Field
         [Test]
         public void SetNullValue()
         {
-            field.Value = null;
-            Assert.That(field.Value == null, Throws.TypeOf<ArgumentNullException>());
+            Assert.Throws<ArgumentNullException>(() => field.Value = null);
         }
     }
 }

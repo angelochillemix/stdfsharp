@@ -96,6 +96,8 @@ namespace KA.StdfSharp.Tests.Compression
 		[Test]
         public void TestDecompress()
         {
+			TestCompress();
+			
             FileStream inputStream = new FileStream(CompressedFile, FileMode.Open);
             BinaryReader inputReader = new BinaryReader(inputStream);
 

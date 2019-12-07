@@ -34,7 +34,8 @@ namespace KA.StdfSharp
         private BinaryWriter writer;
         private Stream stream;
 
-        private bool disposed;
+        private bool disposed = false;
+        private bool closed = false;
 
         private static readonly ObjectDisposedException disposedException = new ObjectDisposedException(typeof(StdfFileWriter).FullName, "Object already disposed");
         
@@ -95,15 +96,9 @@ namespace KA.StdfSharp
             {
                 if (disposing)
                 {
-                    if (writer != null)
-                    {
-                        ((IDisposable)writer).Dispose();
-                        writer = null;
-                    }
-                    if (stream != null)
-                    {
-                        stream.Dispose();
-                        stream = null;
+					if (!closed)
+					{
+						Close();
                     }
                 }
             }
@@ -118,5 +113,23 @@ namespace KA.StdfSharp
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+		/// <summary>
+		/// Closes the underlying resources used by this reader
+		/// </summary>
+		public void Close()
+		{
+            if (writer != null)
+            {
+                ((IDisposable)writer).Dispose();
+                writer = null;
+            }
+            if (stream != null)
+            {
+                stream.Dispose();
+                stream = null;
+            }
+			closed = true;
+		}
     }
 }

@@ -31,7 +31,10 @@ namespace KA.StdfSharp.Tests
     [TestFixture]
     public class TestStdfFile
     {
-        private static readonly string filePath = Path.GetFullPath(@"../../../../../../stdf/stdf_test.std");
+        private static readonly string filePath = Constants.TestStdfFilePath;
+
+        private StdfFileReader reader;
+        private StdfFileWriter writer;
 		
 		private StdfFile file;
         
@@ -40,7 +43,23 @@ namespace KA.StdfSharp.Tests
         {
             file = new StdfFile(filePath);
         }
-        
+
+        [TearDown]
+        public void Finish()
+        {
+            if (reader != null)
+            {
+                reader.Close();
+                reader.Dispose();
+            }
+            if (writer != null)
+            {
+                writer.Close();
+                writer.Dispose();
+            }
+            file = null;
+        }
+
         [Test]
         public void ReadAndWriteOpening()
         {
@@ -72,15 +91,14 @@ namespace KA.StdfSharp.Tests
         [Test]
         public void OpenFileForWritingAfterOpenedForReading()
         {
-            file.OpenForRead();
+            reader = file.OpenForRead();
             Assert.Throws<IOException>(() => file.OpenForWrite());
         }
 
         [Test]
         public void OpenFileForReadingAfterOpenedForWriting()
         {
-            file.OpenForWrite();
-            file.OpenForRead();
+            writer = file.OpenForWrite();
             Assert.Throws<IOException>(() => file.OpenForRead());
         }
 

@@ -33,8 +33,8 @@ namespace KA.StdfSharp.Tests
     [TestFixture]
     public class TestStdfFileReader
     {
-        private static readonly string filePath = Path.GetFullPath(@"../../../../../../stdf/stdf_test.std");
-        private static readonly string tmpFilePath = Path.GetFullPath(@"../../../../../stdf/tmp.std");
+        private static readonly string filePath = Constants.TestStdfFilePath;
+        private static readonly string tmpFilePath = Constants.TemporaryTestStdfFilePath;
         
         [SetUp]
         public void Init()
@@ -87,10 +87,14 @@ namespace KA.StdfSharp.Tests
         {
             using (FileStream stream = File.OpenWrite(tmpFilePath))
             {
-                using (new StdfFileReader(stream))
-                {
-                    Assert.Fail("A StdfException should be thrown because the passed stream is not readable.");
-                }
+                Exception e = Assert.Throws<StdfException>(() => new StdfFileReader(stream));
+                Assert.That(e.Message, Is.EqualTo("An error occurred during reader initialization"));
+                //Assert.That(e.InnerException, Is.EqualTo(typeof(ArgumentException)));
+                Assert.That(e.InnerException.Message, Is.EqualTo("Stream was not readable."));
+                // using (new StdfFileReader(stream))
+                // {
+                //     Assert.Fail("A StdfException should be thrown because the passed stream is not readable.");
+                // }
             }
             //Assert.That(() => new StdfFileReader(File.OpenWrite(tmpFilePath)), Throws.TypeOf<StdfException>);
         }
@@ -98,11 +102,8 @@ namespace KA.StdfSharp.Tests
         [Test]
         public void ReadFileThroughNullStream()
         {
-            using (StdfFileReader reader = new StdfFileReader(null))
-            {
-                Assert.Fail("A StdfException should be thrown because the passed stream is not readable.");
-            }
-            //Assert.That(() => new StdfFileReader(null), Throws.TypeOf<StdfException>);
+            Exception e = Assert.Throws<StdfException>(() => new StdfFileReader(null));
+            Assert.That(e.Message, Is.EqualTo("An error occurred during reader initialization"));
         }
 
         [Test]

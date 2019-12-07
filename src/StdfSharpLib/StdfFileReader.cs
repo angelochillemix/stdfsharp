@@ -104,7 +104,7 @@ namespace KA.StdfSharp
             {
 				reader = BinaryReaderFactory.CreateDefaultBinaryReader(stream);
                 FarRecord far = ReadFarRecord();
-				reader.Close();
+				//reader.Close();
 				reader = BinaryReaderFactory.CreateBinaryReader(far.Cpu, stream);
             }
             catch (Exception e)

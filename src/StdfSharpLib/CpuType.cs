@@ -105,15 +105,7 @@ namespace KA.StdfSharp
         {
 			get
 			{
-	            switch (Type)
-	            {
-	                case CpuType.Vax:
-	                case CpuType.Sun:
-	                    return false;
-	                case CpuType.Sun386:
-	                    return true;
-	            }
-	            throw new ArgumentException("Unknown cpu type");
+                return Endianess.IsLittleEndian(Type);
 			}
         }
     }
@@ -125,7 +117,7 @@ namespace KA.StdfSharp
     {
         
         /// <summary>
-        /// Returns true if the passed 
+        /// Returns true if the passed cpu is LittleEndian, false otherwise
         /// </summary>
         /// <param name="cpu"></param>
         /// <returns></returns>
@@ -142,6 +134,11 @@ namespace KA.StdfSharp
             throw new ArgumentException("Unknown cpu type", "cpu");
         }
 
+        /// <summary>
+        /// Returns true if the passed <see cref="CpuType"> is LittleEndian, false otherwise
+        /// </summary>
+        /// <param name="cpu"></param>
+        /// <returns></returns>
         public static bool IsLittleEndian(CpuType cpu)
         {
             return IsLittleEndian((byte) cpu);

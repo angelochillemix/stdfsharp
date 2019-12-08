@@ -10,7 +10,7 @@ namespace StdfExecTest
 {
     class Program
     {
-        private static readonly string filePath = Path.GetFullPath(@"../../../../../stdf/stdf_test.std");
+        private static readonly string filePath = Path.GetFullPath(@"../../../../stdf/stdf_test.std");
 
         private static readonly Type[] Records;
 
@@ -37,31 +37,42 @@ namespace StdfExecTest
         static void Main(string[] args)
         {
             Start();
-			Finish();
+            Finish();
         }
 
         private static void Start()
         {
             Console.WriteLine("Starting to read");
             DateTime start = DateTime.Now;
-            using (FileStream stream = File.OpenRead(filePath))
+            int partCount = 0;
+            try
             {
-                using (StdfFileReader reader = new StdfFileReader(stream))
+                using (FileStream stream = File.OpenRead(filePath))
                 {
-                    foreach (Type record in Records)
+                    using (StdfFileReader reader = new StdfFileReader(stream))
                     {
-                        reader.RegisterDelegate(record, delegate(object o, RecordReadEventArgs e)
-                                                            {
-                                                                //Console.WriteLine(e.Record);
-                                                                //Debug.WriteLine(e.Record);
-                                                            });
+                        foreach (Type record in Records)
+                        {
+                            //reader.RegisterDelegate(record, PtrReadDelegate);
+                            reader.RegisterDelegate(record, delegate (object o, RecordReadEventArgs e)
+                                                                {
+                                                                    partCount++;
+                                                                    //Console.WriteLine(e.Record);
+                                                                   //Debug.WriteLine("Read {0} PTR records", partCount);
+                                                                });
+                        }
+                        reader.Read();
+                        Finish();
                     }
-                    reader.Read();
-                    Finish();
                 }
+            }
+            catch (Exception e) {
+                Console.WriteLine("An exception occurred: {0}" , e.Message);
+                Console.WriteLine(e.StackTrace);
             }
             DateTime end = DateTime.Now;
             Console.WriteLine("Elapsed time: {0}", end - start);
+            Console.WriteLine("Counted {0} parts", partCount);
             Console.ReadLine();
         }
 
@@ -70,6 +81,7 @@ namespace StdfExecTest
             PtrRecord ptr = e.Record as PtrRecord;
             if (ptr == null)
                 return;
+            Console.WriteLine(e.Record);
         }
 
         private static void Finish()

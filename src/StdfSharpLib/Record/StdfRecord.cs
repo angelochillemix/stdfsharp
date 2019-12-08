@@ -1,22 +1,18 @@
 /**
- * $Id: StdfRecord.cs 22 2008-06-08 13:58:52Z outburst $
+ * This file is part of StdfSharp library
  * 
- * STDFSharp - Reading/writing STDF (Standard Test Data Format) library for .NET
- *
- * File: StdfRecord.cs
- * Description: 
- * 
- * Copyright (C) 2006 Outburst <outburst@users.sourceforge.net>
- *  
- * This library is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU Lesser General Public License 
- * as published by the Free Software Foundation; either version 2.1 
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful, 
  * but WITHOUT ANY WARRANTY; without even the implied warranty of 
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
  * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Nome-Programma.  If not, see <http://www.gnu.org/licenses/>
  */
 
 using System;
@@ -36,7 +32,6 @@ namespace KA.StdfSharp.Record
         private readonly StdfHeader header;
 
         private StdfRecordAttribute attribute;
-        //private ushort bytesToRead;
 		
 		private BytesReadChecker bytesChecker = new BytesReadChecker();
 
@@ -50,7 +45,6 @@ namespace KA.StdfSharp.Record
         public void Clear()
         {
 			bytesChecker.Clear();
-            //bytesToRead = 0;
             foreach (IField field in fieldRegistry)
             {
                 field.Reset();
@@ -105,7 +99,6 @@ namespace KA.StdfSharp.Record
             if (reader.PeekChar() == -1)
                 return;
 
-            //ushort bytesRead = 0;
 			bytesChecker.ResetCount();
             foreach (IField field in fieldRegistry)
             {
@@ -116,7 +109,6 @@ namespace KA.StdfSharp.Record
 				
                 field.Read(reader);
 				bytesChecker.IncreaseBytesRead(field.Size);
-				//bytesRead += field.Size;
                 field.Validate();
             }
         }
@@ -155,11 +147,6 @@ namespace KA.StdfSharp.Record
 				bytesRead += increment;
 			}
 		}
-
-//        private bool CanRead(ushort bytesRead)
-//        {
-//            return (bytesToRead == 0 || bytesRead < bytesToRead);
-//        }
 
         public void Validate()
         {

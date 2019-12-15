@@ -3,7 +3,7 @@ StdfShar is a Reading/writing STDF (Standard Test Data Format) library for .NET 
 
 Features:
 - Support of the STDF V4 specifications
-- Read STDF file structure (partial implementation) 
+- Read STDF file structure (currently partial implementation) 
 - Capability to write a STDF file as a result of processing other STDF files or custom developed analysis tool
 - On Demand record reading and processing
 

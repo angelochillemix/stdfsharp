@@ -1,5 +1,5 @@
 # stdfsharp
-StdfShar is a Reading/writing STDF (Standard Test Data Format) library for .NET written in C# using .Net Core
+StdfSharp is a Reading/writing STDF (Standard Test Data Format) library for .NET written in C# using .Net Core
 
 Features:
 - Support of the STDF V4 specifications

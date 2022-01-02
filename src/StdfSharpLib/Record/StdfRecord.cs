@@ -198,7 +198,6 @@ namespace KA.StdfSharp.Record
             set
             {
 				bytesChecker.BytesToRead = value;
-                //bytesToRead = value;
             }
         }
 
@@ -236,12 +235,12 @@ namespace KA.StdfSharp.Record
             {
                 if (str.Length > 0)
                     str.Append(", ");
-                str.Append("Field ").Append(name).Append(": ").Append(fieldRegistry[name].ToString());
+                str.Append("Field ").Append(name).Append(": ").Append(fieldRegistry[name].ToString()).AppendLine();
             }
             recordInfo.Append("Record ").Append(GetType().Name).Append(", ").
                 Append(", ").Append("Type: ").Append(Type).
                 Append(", ").Append("Subtype: ").Append(Subtype).
-                Append(", ").Append("Lenght: ").Append(Length).
+                Append(", ").Append("Lenght: ").Append(Length).AppendLine().
                 Append(", ").Append(str);
             return recordInfo.ToString();
         }
